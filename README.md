@@ -108,7 +108,7 @@ In addition to regular reports, several parts of the pipeline generate automated
 
 [^naming]: Participants are associated with unique label that follows the pattern <site><numeric_id><session>. For example, the scans associated with the first visit of a participant from site NS that has ID 10001 would be associated with the label NS10001V1. These labels are stored in the PatientName DICOM header field and used to name the uploaded zip files.
 
-[^reproin]: On each scanner, the runs are named according to the [ReproIn](https://github.com/ReproNim/reproin/blob/master/README.md) specification. The specification allows for conversion by HeuDiConv into BIDS with a heuristic that is built into the heudiconv package. However, not all sites followed this specification, and so we have needed to use [these heuristic modifications](/heudiconv_app/assets/a2cps.py).
+[^reproin]: On each scanner, the runs are named according to the [ReproIn](https://github.com/ReproNim/reproin/blob/master/README.md) specification. The specification allows for conversion by HeuDiConv into BIDS with a heuristic that is built into the heudiconv package. However, not all sites followed this specification, and so we have needed to use [these heuristic modifications](https://github.com/a2cps/qaqc-sample/blob/main/heudiconv_app/assets/a2cps.py).
 
 [^zip]: Several of the scanners export 2D DICOM, which means that functional runs can comprise tens of thousands of files. We have found that this many files can "stress" the filesystem, which manifests as either general slowness or even a refusal to create new files. See the [wikipedia article on inodes](https://en.wikipedia.org/wiki/Inode).
 
