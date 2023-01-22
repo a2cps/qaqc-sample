@@ -73,7 +73,7 @@ A2CPS
 
 After a scan has been completed, sites export the DICOMs from the scanner[^reproin], zip[^zip] them[^nozip], and then upload the scan[^naming] to TACC[^2]. The existence of new uploads are monitored with a `cronjob` (see [cronjob.sh](/cronjob.sh)). When the cronjob detects a new upload, it submits a job to the `dicom_reader_actor`, which in turn triggers the `dicom_reader_app` to make a copy of DICOMs[^3].
 
-After a successful copy, the `dicom_reader_actor` then triggers the HeuDiConv actor/app to convert the DICOM files into BIDS. This app not only runs the `heudiconv` function, but then also takes several steps to clean and check the outputs of that function[^4].
+After a successful copy, the `dicom_reader_actor` then triggers the HeuDiConv actor/app to convert the DICOM files into BIDS[^sourcedata]. This app not only runs the `heudiconv` function, but then also takes several steps to clean and check the outputs of that function[^4].
 
 If the conversion is successful, then the scan will be in a [BIDS](https://bids-specification.readthedocs.io/en/stable/index.html) format and the HeuDiConv actor will trigger more Tapis actors. Currently, these include MRIQC[^5], fMRIPrep, QSIprep, and CAT12.
 
@@ -117,6 +117,8 @@ In addition to regular reports, several parts of the pipeline generate automated
 [^2]: Each site has read and write permissions for just one folder on a secure storage system on TACC, and the sites can access that folder over `ssh`.
 
 [^3]: Although most of the apps could run participants in parallel, we group each session into a distinct BIDS dataset and then process those datasets separately.
+
+[^sourcedata]: By default HeuDiConv makes a gzipped tar arvhice of each DICOM series. This means that we are storing three copies of the DICOMs (the original data that was submitted by the site, a zipped copy, and the copy stored by HeuDiConv in the BIDS folders). Each of these serve a slightly different purpose, but they take up lots of space (not an issue for our environment).
 
 [^4]: As a few examples: files that do not follow the BIDS standard are removed, the resulting JSON sidecars are compared against reference values for that site (e.g., image dimensions, phase encoding direction, scan length), and the final output is checked with the [bids validator](https://github.com/bids-standard/bids-validator).
 
